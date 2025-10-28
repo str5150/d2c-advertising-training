@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>広告運用知識テスト - D2C広告研修講座</title>
+    <link rel="stylesheet" href="test-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>広告運用知識テスト</h1>
+            <p>D2C広告研修講座 - 事前知識レベル測定</p>
+        </header>
+
+        <!-- 名前入力画面 -->
+        <div id="nameInputScreen" class="screen active">
+            <div class="name-input-container">
+                <h2>テスト開始前の準備</h2>
+                <p>テストを受ける前に、お名前を入力してください。</p>
+                <form id="nameForm">
+                    <div class="input-group">
+                        <label for="userName">お名前</label>
+                        <input type="text" id="userName" name="userName" required placeholder="山田太郎">
+                    </div>
+                    <button type="submit" class="btn btn-primary">テストを開始する</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- テスト画面 -->
+        <div id="testScreen" class="screen">
+            <div class="test-header">
+                <div class="test-info">
+                    <span id="testTitle">広告運用知識テスト</span>
+                    <span id="testProgress">1 / 50</span>
+                </div>
+                <div class="test-timer">
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-number">
+                    <span id="questionNumber">1</span>
+                </div>
+                <div class="question-content">
+                    <h3 id="questionText">問題文がここに表示されます</h3>
+                    <div class="options-container">
+                        <div class="option" data-option="0">
+                            <span class="option-letter">A</span>
+                            <span class="option-text">選択肢1</span>
+                        </div>
+                        <div class="option" data-option="1">
+                            <span class="option-letter">B</span>
+                            <span class="option-text">選択肢2</span>
+                        </div>
+                        <div class="option" data-option="2">
+                            <span class="option-letter">C</span>
+                            <span class="option-text">選択肢3</span>
+                        </div>
+                        <div class="option" data-option="3">
+                            <span class="option-letter">D</span>
+                            <span class="option-text">選択肢4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-navigation">
+                <button id="prevBtn" class="btn btn-secondary" disabled>前の問題</button>
+                <button id="nextBtn" class="btn btn-primary">次の問題</button>
+                <button id="finishBtn" class="btn btn-success" style="display: none;">テストを完了する</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- 結果画面 -->
+        <div id="resultScreen" class="screen">
+            <div class="result-container">
+                <h2>テスト結果</h2>
+                <div class="result-summary">
+                    <div class="result-item">
+                        <span class="result-label">お名前</span>
+                        <span class="result-value" id="resultName">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">正解数</span>
+                        <span class="result-value" id="resultScore">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">正解率</span>
+                        <span class="result-value" id="resultPercentage">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">所要時間</span>
+                        <span class="result-value" id="resultTime">-</span>
+                    </div>
+                </div>
+
+                <div class="result-level">
+                    <h3>知識レベル</h3>
+                    <div class="level-indicator" id="levelIndicator">
+                        <div class="level-bar">
+                            <div class="level-fill" id="levelFill"></div>
+                        </div>
+                        <span class="level-text" id="levelText">-</span>
+                    </div>
+                </div>
+
+                <div class="wrong-answers" id="wrongAnswersContainer" style="display: none;">
+                    <h3>間違えた問題</h3>
+                    <div class="wrong-answers-list" id="wrongAnswersList"></div>
+                </div>
+
+                <div class="result-actions">
+                    <button id="retakeBtn" class="btn btn-secondary">再テスト</button>
+                    <button id="viewResultsBtn" class="btn btn-primary">結果一覧を見る</button>
+                    <a href="../index.html" class="btn btn-success">講座に進む</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 結果一覧画面 -->
+        <div id="resultsListScreen" class="screen">
+            <div class="results-list-container">
+                <h2>テスト結果一覧</h2>
+                <div class="results-list" id="resultsList"></div>
+                <div class="results-actions">
+                    <button id="backToTestBtn" class="btn btn-primary">テストに戻る</button>
+                    <button id="clearResultsBtn" class="btn btn-danger">結果をクリア</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="test-data.js"></script>
+    <script src="test-system.js"></script>
+</body>
+</html>
