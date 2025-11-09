@@ -7,9 +7,41 @@ class TestSystem {
         this.timerInterval = null;
         this.userName = '';
         this.resultManager = new TestResultManager();
+        this.shuffledQuestions = []; // シャッフルされた問題リスト
         
         this.initializeElements();
         this.bindEvents();
+    }
+    
+    // 問題をランダムにシャッフルし、各問題の選択肢もランダムにシャッフル
+    shuffleQuestions() {
+        // 元の問題をコピー
+        this.shuffledQuestions = testQuestions.map(q => ({ ...q }));
+        
+        // 問題の順番をシャッフル
+        for (let i = this.shuffledQuestions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.shuffledQuestions[i], this.shuffledQuestions[j]] = [this.shuffledQuestions[j], this.shuffledQuestions[i]];
+        }
+        
+        // 各問題の選択肢をシャッフル（正解のインデックスも更新）
+        this.shuffledQuestions.forEach(question => {
+            const originalCorrect = question.correct;
+            const options = [...question.options];
+            const indices = [0, 1, 2, 3];
+            
+            // 選択肢のインデックスをシャッフル
+            for (let i = indices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indices[i], indices[j]] = [indices[j], indices[i]];
+            }
+            
+            // 選択肢をシャッフルされた順序で再配置
+            question.options = indices.map(idx => options[idx]);
+            
+            // 正解のインデックスを更新
+            question.correct = indices.indexOf(originalCorrect);
+        });
     }
 
     initializeElements() {
@@ -87,6 +119,9 @@ class TestSystem {
             return;
         }
         
+        // 問題をシャッフル
+        this.shuffleQuestions();
+        
         this.currentQuestionIndex = 0;
         this.answers = [];
         this.startTime = Date.now();
@@ -113,14 +148,14 @@ class TestSystem {
     }
 
     loadQuestion() {
-        const question = testQuestions[this.currentQuestionIndex];
+        const question = this.shuffledQuestions[this.currentQuestionIndex];
         
         this.questionNumber.textContent = question.id;
         this.questionText.textContent = question.question;
-        this.testProgress.textContent = `${this.currentQuestionIndex + 1} / ${testQuestions.length}`;
+        this.testProgress.textContent = `${this.currentQuestionIndex + 1} / ${this.shuffledQuestions.length}`;
         
         // プログレスバーの更新
-        const progress = ((this.currentQuestionIndex + 1) / testQuestions.length) * 100;
+        const progress = ((this.currentQuestionIndex + 1) / this.shuffledQuestions.length) * 100;
         this.progressFill.style.width = `${progress}%`;
         
         // オプションの更新
@@ -173,7 +208,7 @@ class TestSystem {
         this.nextBtn.disabled = !hasAnswer;
         
         // テスト完了ボタン
-        const isLastQuestion = this.currentQuestionIndex === testQuestions.length - 1;
+        const isLastQuestion = this.currentQuestionIndex === this.shuffledQuestions.length - 1;
         this.nextBtn.style.display = isLastQuestion ? 'none' : 'inline-block';
         this.finishBtn.style.display = isLastQuestion && hasAnswer ? 'inline-block' : 'none';
     }
@@ -186,7 +221,7 @@ class TestSystem {
     }
 
     nextQuestion() {
-        if (this.currentQuestionIndex < testQuestions.length - 1) {
+        if (this.currentQuestionIndex < this.shuffledQuestions.length - 1) {
             this.currentQuestionIndex++;
             this.loadQuestion();
         }
@@ -202,7 +237,7 @@ class TestSystem {
         let correctCount = 0;
         const wrongAnswers = [];
         
-        testQuestions.forEach((question, index) => {
+        this.shuffledQuestions.forEach((question, index) => {
             const userAnswer = this.answers[index];
             const correctAnswer = question.correct;
             
@@ -219,14 +254,14 @@ class TestSystem {
             }
         });
         
-        const percentage = Math.round((correctCount / testQuestions.length) * 100);
+        const percentage = Math.round((correctCount / this.shuffledQuestions.length) * 100);
         const timeSpent = Date.now() - this.startTime;
         
         // 結果を保存
         const result = this.resultManager.saveResult(
             this.userName,
             correctCount,
-            testQuestions.length,
+            this.shuffledQuestions.length,
             wrongAnswers,
             timeSpent
         );
