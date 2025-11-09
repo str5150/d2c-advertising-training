@@ -83,6 +83,11 @@ class TestSystem {
         this.viewResultsBtn = document.getElementById('viewResultsBtn');
         this.backToTestBtn = document.getElementById('backToTestBtn');
         this.clearResultsBtn = document.getElementById('clearResultsBtn');
+        this.copyResultBtn = document.getElementById('copyResultBtn');
+        
+        // 現在の結果データを保持
+        this.currentResult = null;
+        this.currentWrongAnswers = [];
     }
 
     bindEvents() {
@@ -102,6 +107,7 @@ class TestSystem {
         this.viewResultsBtn.addEventListener('click', () => this.showResultsList());
         this.backToTestBtn.addEventListener('click', () => this.showTestScreen());
         this.clearResultsBtn.addEventListener('click', () => this.clearResults());
+        this.copyResultBtn.addEventListener('click', () => this.copyResults());
         
         // オプション選択
         this.optionsContainer.addEventListener('click', (e) => {
@@ -266,6 +272,8 @@ class TestSystem {
             timeSpent
         );
         
+        this.currentResult = result;
+        this.currentWrongAnswers = wrongAnswers;
         this.displayResults(result, wrongAnswers);
     }
 
@@ -367,7 +375,9 @@ class TestSystem {
     viewResult(resultId) {
         const result = this.resultManager.getResultById(resultId);
         if (result) {
-            this.displayResults(result, result.wrongAnswers);
+            this.currentResult = result;
+            this.currentWrongAnswers = result.wrongAnswers || [];
+            this.displayResults(result, this.currentWrongAnswers);
             this.showScreen('resultScreen');
         }
     }
@@ -394,6 +404,59 @@ class TestSystem {
 
     showTestScreen() {
         this.showScreen('testScreen');
+    }
+
+    copyResults() {
+        if (!this.currentResult || !this.currentWrongAnswers) {
+            return;
+        }
+
+        const result = this.currentResult;
+        const wrongAnswers = this.currentWrongAnswers;
+        const level = this.getKnowledgeLevel(result.percentage);
+        const minutes = Math.floor(result.timeSpent / 60000);
+        const seconds = Math.floor((result.timeSpent % 60000) / 1000);
+
+        let text = `広告運用知識テスト 結果\n`;
+        text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+        text += `お名前: ${result.name}\n`;
+        text += `正解数: ${result.score} / ${result.totalQuestions}\n`;
+        text += `正解率: ${result.percentage}%\n`;
+        text += `所要時間: ${minutes}分${seconds}秒\n`;
+        text += `知識レベル: ${level.text}\n\n`;
+
+        if (wrongAnswers.length > 0) {
+            text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            text += `間違えた問題 (${wrongAnswers.length}問)\n`;
+            text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            wrongAnswers.forEach((wrongAnswer, index) => {
+                text += `${index + 1}. Q${wrongAnswer.questionNumber}: ${wrongAnswer.question}\n`;
+                text += `   あなたの回答: ${wrongAnswer.userAnswer}\n`;
+                text += `   正解: ${wrongAnswer.correctAnswer}\n`;
+                text += `   解説: ${wrongAnswer.explanation}\n\n`;
+            });
+        } else {
+            text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            text += `全問正解です！\n`;
+            text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        }
+
+        // クリップボードにコピー
+        navigator.clipboard.writeText(text).then(() => {
+            // ボタンのテキストを一時的に変更
+            const originalText = this.copyResultBtn.textContent;
+            this.copyResultBtn.textContent = 'コピーしました！';
+            this.copyResultBtn.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                this.copyResultBtn.textContent = originalText;
+                this.copyResultBtn.style.opacity = '1';
+            }, 2000);
+        }).catch(err => {
+            alert('コピーに失敗しました。手動でコピーしてください。');
+            console.error('コピーエラー:', err);
+        });
     }
 
     showScreen(screenId) {

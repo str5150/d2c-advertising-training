@@ -6,48 +6,48 @@
 }
 
 body {
-    font-family: 'Noto Sans JP', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Noto Serif JP', 'Times New Roman', serif;
+    line-height: 1.8;
+    color: #000;
+    background: #fff;
     min-height: 100vh;
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
 /* Header */
 .header {
-    background: rgba(255, 255, 255, 0.95);
+    background: #fff;
     padding: 2rem;
-    border-radius: 12px;
+    border: 2px solid #000;
     text-align: center;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 0.5rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .header p {
     font-size: 1rem;
-    color: #666;
+    color: #333;
+    font-family: 'Noto Serif JP', serif;
 }
 
 /* Screen Management */
 .screen {
     display: none;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
+    background: #fff;
+    border: 2px solid #000;
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .screen.active {
@@ -63,13 +63,15 @@ body {
 
 .name-input-container h2 {
     font-size: 1.5rem;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 1rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .name-input-container p {
-    color: #666;
+    color: #333;
     margin-bottom: 2rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .input-group {
@@ -80,22 +82,24 @@ body {
 .input-group label {
     display: block;
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 0.5rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .input-group input {
     width: 100%;
     padding: 0.8rem;
-    border: 2px solid #e1e5e9;
-    border-radius: 8px;
+    border: 2px solid #000;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    background: #fff;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .input-group input:focus {
     outline: none;
-    border-color: #667eea;
+    background: #f5f5f5;
 }
 
 /* Test Screen */
@@ -105,7 +109,7 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid #e1e5e9;
+    border-bottom: 2px solid #000;
 }
 
 .test-info {
@@ -116,15 +120,16 @@ body {
 
 .test-info span {
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .test-timer {
-    background: #667eea;
-    color: white;
+    background: #000;
+    color: #fff;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
     font-weight: 500;
+    font-family: 'Times New Roman', serif;
 }
 
 .question-container {
@@ -133,19 +138,20 @@ body {
 
 .question-number {
     display: inline-block;
-    background: #667eea;
-    color: white;
+    background: #000;
+    color: #fff;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
     font-weight: 500;
     margin-bottom: 1rem;
+    font-family: 'Times New Roman', serif;
 }
 
 .question-content h3 {
     font-size: 1.2rem;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 1.5rem;
-    line-height: 1.5;
+    line-height: 1.8;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .options-container {
@@ -157,30 +163,23 @@ body {
     display: flex;
     align-items: center;
     padding: 1rem;
-    border: 2px solid #e1e5e9;
-    border-radius: 8px;
+    border: 2px solid #000;
     cursor: pointer;
-    transition: all 0.3s ease;
+    background: #fff;
+    transition: background 0.2s ease;
 }
 
 .option:hover {
-    border-color: #667eea;
-    background: #f8f9fa;
+    background: #f5f5f5;
 }
 
 .option.selected {
-    border-color: #667eea;
-    background: #e8f0fe;
+    background: #000;
+    color: #fff;
 }
 
-.option.correct {
-    border-color: #28a745;
-    background: #d4edda;
-}
-
-.option.incorrect {
-    border-color: #dc3545;
-    background: #f8d7da;
+.option.selected .option-text {
+    color: #fff;
 }
 
 .option-letter {
@@ -189,24 +188,23 @@ body {
     justify-content: center;
     width: 30px;
     height: 30px;
-    background: #667eea;
-    color: white;
-    border-radius: 50%;
+    background: #000;
+    color: #fff;
     font-weight: 500;
     margin-right: 1rem;
+    font-family: 'Times New Roman', serif;
 }
 
-.option.correct .option-letter {
-    background: #28a745;
-}
-
-.option.incorrect .option-letter {
-    background: #dc3545;
+.option.selected .option-letter {
+    background: #fff;
+    color: #000;
 }
 
 .option-text {
     flex: 1;
     font-size: 1rem;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .test-navigation {
@@ -218,15 +216,15 @@ body {
 
 .progress-bar {
     width: 100%;
-    height: 8px;
-    background: #e1e5e9;
-    border-radius: 4px;
+    height: 4px;
+    background: #e0e0e0;
     overflow: hidden;
+    border: 1px solid #000;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #000;
     transition: width 0.3s ease;
 }
 
@@ -237,8 +235,9 @@ body {
 
 .result-container h2 {
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 2rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .result-summary {
@@ -249,10 +248,9 @@ body {
 }
 
 .result-item {
-    background: #f8f9fa;
+    background: #fff;
     padding: 1rem;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border: 2px solid #000;
 }
 
 .result-label {
@@ -260,13 +258,15 @@ body {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 0.5rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .result-value {
     display: block;
     font-size: 1.2rem;
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .result-level {
@@ -275,8 +275,9 @@ body {
 
 .result-level h3 {
     font-size: 1.2rem;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 1rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .level-indicator {
@@ -288,21 +289,22 @@ body {
 .level-bar {
     flex: 1;
     height: 20px;
-    background: #e1e5e9;
-    border-radius: 10px;
+    background: #e0e0e0;
     overflow: hidden;
+    border: 1px solid #000;
 }
 
 .level-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #000;
     transition: width 0.3s ease;
 }
 
 .level-text {
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
     min-width: 100px;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .wrong-answers {
@@ -312,8 +314,9 @@ body {
 
 .wrong-answers h3 {
     font-size: 1.2rem;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 1rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .wrong-answers-list {
@@ -322,21 +325,28 @@ body {
 }
 
 .wrong-answer-item {
-    background: #f8f9fa;
+    background: #fff;
     padding: 1rem;
-    border-radius: 8px;
-    border-left: 4px solid #dc3545;
+    border: 2px solid #000;
 }
 
 .wrong-answer-question {
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 0.5rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .wrong-answer-explanation {
     font-size: 0.9rem;
-    color: #666;
+    color: #333;
+    line-height: 1.8;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.wrong-answer-explanation strong {
+    color: #000;
+    font-weight: 700;
 }
 
 .result-actions {
@@ -349,9 +359,10 @@ body {
 /* Results List Screen */
 .results-list-container h2 {
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 2rem;
     text-align: center;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .results-list {
@@ -359,11 +370,10 @@ body {
 }
 
 .result-list-item {
-    background: #f8f9fa;
+    background: #fff;
     padding: 1rem;
-    border-radius: 8px;
+    border: 2px solid #000;
     margin-bottom: 1rem;
-    border-left: 4px solid #667eea;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -375,20 +385,23 @@ body {
 
 .result-list-name {
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
     margin-bottom: 0.25rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .result-list-details {
     font-size: 0.9rem;
     color: #666;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .result-list-score {
     font-size: 1.2rem;
     font-weight: 500;
-    color: #2c3e50;
+    color: #000;
     margin-right: 1rem;
+    font-family: 'Noto Serif JP', serif;
 }
 
 .result-list-actions {
@@ -405,71 +418,86 @@ body {
 /* Buttons */
 .btn {
     padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 8px;
+    border: 2px solid #000;
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    background: #fff;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.btn:hover {
+    background: #000;
+    color: #fff;
 }
 
 .btn-primary {
-    background: #667eea;
-    color: white;
+    background: #000;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background: #5a6fd8;
-    transform: translateY(-2px);
+    background: #333;
 }
 
 .btn-secondary {
-    background: #6c757d;
-    color: white;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
 }
 
 .btn-secondary:hover {
-    background: #5a6268;
-    transform: translateY(-2px);
+    background: #000;
+    color: #fff;
 }
 
 .btn-success {
-    background: #28a745;
-    color: white;
+    background: #000;
+    color: #fff;
 }
 
 .btn-success:hover {
-    background: #218838;
-    transform: translateY(-2px);
+    background: #333;
 }
 
 .btn-danger {
-    background: #dc3545;
-    color: white;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
 }
 
 .btn-danger:hover {
-    background: #c82333;
-    transform: translateY(-2px);
+    background: #000;
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
 }
 
 .btn:disabled {
-    opacity: 0.6;
+    opacity: 0.4;
     cursor: not-allowed;
-    transform: none;
+    background: #e0e0e0;
+    color: #666;
+    border-color: #999;
 }
 
 .btn:disabled:hover {
-    transform: none;
+    background: #e0e0e0;
+    color: #666;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        padding: 20px 10px;
     }
 
     .header {
@@ -523,35 +551,10 @@ body {
     }
 }
 
-/* Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.screen.active {
-    animation: fadeIn 0.5s ease;
-}
-
-/* Level Colors */
-.level-beginner {
-    color: #dc3545;
-}
-
-.level-intermediate {
-    color: #ffc107;
-}
-
-.level-advanced {
-    color: #28a745;
-}
-
+/* Level Colors - モノクロなので全て黒 */
+.level-beginner,
+.level-intermediate,
+.level-advanced,
 .level-expert {
-    color: #6f42c1;
+    color: #000;
 }
