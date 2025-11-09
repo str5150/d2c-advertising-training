@@ -417,7 +417,7 @@ class TestSystem {
         const minutes = Math.floor(result.timeSpent / 60000);
         const seconds = Math.floor((result.timeSpent % 60000) / 1000);
 
-        let text = `広告運用知識テスト 結果\n`;
+        let text = `クロコス社内運用試験 結果\n`;
         text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
         text += `お名前: ${result.name}\n`;
         text += `正解数: ${result.score} / ${result.totalQuestions}\n`;
