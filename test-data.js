@@ -127,7 +127,7 @@ const testQuestions = [
             "Company（自社）",
             "Competitor（競合）",
             "Customer（顧客）",
-            "Cost（コスト）"
+            "Cost（費用）"
         ],
         correct: 3,
         explanation: "3C分析はCompany（自社）、Competitor（競合）、Customer（顧客）の3つの観点から分析します。"
@@ -606,6 +606,7 @@ const testQuestions = [
 class TestResultManager {
     constructor() {
         this.results = JSON.parse(localStorage.getItem('testResults') || '[]');
+        this.allResultsKey = 'allTestResults'; // 全受験者の結果を保存するキー
     }
 
     saveResult(name, score, totalQuestions, wrongAnswers, timeSpent) {
@@ -620,13 +621,24 @@ class TestResultManager {
             date: new Date().toISOString()
         };
         
+        // 個人の結果に追加
         this.results.push(result);
         localStorage.setItem('testResults', JSON.stringify(this.results));
+        
+        // 全受験者の結果にも追加（管理者用）
+        const allResults = this.getAllResults();
+        allResults.push(result);
+        localStorage.setItem(this.allResultsKey, JSON.stringify(allResults));
+        
         return result;
     }
 
     getResults() {
         return this.results;
+    }
+
+    getAllResults() {
+        return JSON.parse(localStorage.getItem(this.allResultsKey) || '[]');
     }
 
     getResultById(id) {
@@ -636,5 +648,10 @@ class TestResultManager {
     deleteResult(id) {
         this.results = this.results.filter(result => result.id !== id);
         localStorage.setItem('testResults', JSON.stringify(this.results));
+        
+        // 全受験者の結果からも削除
+        const allResults = this.getAllResults();
+        const filteredAllResults = allResults.filter(result => result.id !== id);
+        localStorage.setItem(this.allResultsKey, JSON.stringify(filteredAllResults));
     }
 }

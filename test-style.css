@@ -212,6 +212,11 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.test-navigation #exitTestBtn {
+    margin-left: auto;
 }
 
 .progress-bar {
@@ -363,6 +368,94 @@ body {
     margin-bottom: 2rem;
     text-align: center;
     font-family: 'Noto Serif JP', serif;
+}
+
+.filter-controls {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 2px solid #000;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 0.5rem;
+    border: 2px solid #000;
+    font-size: 1rem;
+    background: #fff;
+    color: #000;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    background: #f5f5f5;
+}
+
+/* Admin Login Screen */
+.admin-login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.admin-login-container h2 {
+    font-size: 1.5rem;
+    color: #000;
+    margin-bottom: 2rem;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Admin Screen */
+.admin-container h2 {
+    font-size: 1.8rem;
+    color: #000;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.admin-filter-controls {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 2px solid #000;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: end;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+}
+
+.admin-results-list {
+    margin-bottom: 2rem;
 }
 
 .results-list {

@@ -50,6 +50,8 @@ class TestSystem {
         this.testScreen = document.getElementById('testScreen');
         this.resultScreen = document.getElementById('resultScreen');
         this.resultsListScreen = document.getElementById('resultsListScreen');
+        this.adminLoginScreen = document.getElementById('adminLoginScreen');
+        this.adminScreen = document.getElementById('adminScreen');
         
         // 名前入力要素
         this.nameForm = document.getElementById('nameForm');
@@ -65,6 +67,7 @@ class TestSystem {
         this.prevBtn = document.getElementById('prevBtn');
         this.nextBtn = document.getElementById('nextBtn');
         this.finishBtn = document.getElementById('finishBtn');
+        this.exitTestBtn = document.getElementById('exitTestBtn');
         
         // 結果要素
         this.resultName = document.getElementById('resultName');
@@ -79,15 +82,30 @@ class TestSystem {
         
         // 結果一覧要素
         this.resultsList = document.getElementById('resultsList');
+        this.filterName = document.getElementById('filterName');
+        this.sortBy = document.getElementById('sortBy');
         this.retakeBtn = document.getElementById('retakeBtn');
         this.viewResultsBtn = document.getElementById('viewResultsBtn');
         this.backToTestBtn = document.getElementById('backToTestBtn');
         this.clearResultsBtn = document.getElementById('clearResultsBtn');
         this.copyResultBtn = document.getElementById('copyResultBtn');
+        this.adminLoginBtn = document.getElementById('adminLoginBtn');
+        
+        // 管理者要素
+        this.adminLoginForm = document.getElementById('adminLoginForm');
+        this.adminPassword = document.getElementById('adminPassword');
+        this.cancelAdminLoginBtn = document.getElementById('cancelAdminLoginBtn');
+        this.adminResultsList = document.getElementById('adminResultsList');
+        this.adminFilterName = document.getElementById('adminFilterName');
+        this.adminSortBy = document.getElementById('adminSortBy');
+        this.exportAllResultsBtn = document.getElementById('exportAllResultsBtn');
+        this.logoutAdminBtn = document.getElementById('logoutAdminBtn');
         
         // 現在の結果データを保持
         this.currentResult = null;
         this.currentWrongAnswers = [];
+        this.isAdmin = false;
+        this.ADMIN_PASSWORD = '0920';
     }
 
     bindEvents() {
@@ -101,6 +119,7 @@ class TestSystem {
         this.prevBtn.addEventListener('click', () => this.previousQuestion());
         this.nextBtn.addEventListener('click', () => this.nextQuestion());
         this.finishBtn.addEventListener('click', () => this.finishTest());
+        this.exitTestBtn.addEventListener('click', () => this.exitTest());
         
         // 結果画面のボタン
         this.retakeBtn.addEventListener('click', () => this.retakeTest());
@@ -108,6 +127,22 @@ class TestSystem {
         this.backToTestBtn.addEventListener('click', () => this.showTestScreen());
         this.clearResultsBtn.addEventListener('click', () => this.clearResults());
         this.copyResultBtn.addEventListener('click', () => this.copyResults());
+        
+        // フィルタ・ソート
+        this.filterName.addEventListener('input', () => this.loadResultsList());
+        this.sortBy.addEventListener('change', () => this.loadResultsList());
+        
+        // 管理者関連
+        this.adminLoginBtn.addEventListener('click', () => this.showAdminLogin());
+        this.adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleAdminLogin();
+        });
+        this.cancelAdminLoginBtn.addEventListener('click', () => this.showResultsList());
+        this.adminFilterName.addEventListener('input', () => this.loadAdminResults());
+        this.adminSortBy.addEventListener('change', () => this.loadAdminResults());
+        this.exportAllResultsBtn.addEventListener('click', () => this.exportAllResults());
+        this.logoutAdminBtn.addEventListener('click', () => this.logoutAdmin());
         
         // オプション選択
         this.optionsContainer.addEventListener('click', (e) => {
@@ -239,6 +274,14 @@ class TestSystem {
         this.showScreen('resultScreen');
     }
 
+    exitTest() {
+        if (confirm('テストを途中で終了しますか？現在までの回答結果で採点されます。')) {
+            this.stopTimer();
+            this.calculateResults();
+            this.showScreen('resultScreen');
+        }
+    }
+
     calculateResults() {
         let correctCount = 0;
         const wrongAnswers = [];
@@ -337,15 +380,41 @@ class TestSystem {
     }
 
     loadResultsList() {
-        const results = this.resultManager.getResults();
+        let results = this.resultManager.getResults();
         
-        if (results.length === 0) {
-            this.resultsList.innerHTML = '<p>まだテスト結果がありません。</p>';
-            return;
+        // フィルタリング
+        const filterName = this.filterName.value.trim().toLowerCase();
+        if (filterName) {
+            results = results.filter(result => 
+                result.name.toLowerCase().includes(filterName)
+            );
         }
         
-        // 日付順でソート（新しい順）
-        results.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // ソート
+        const sortBy = this.sortBy.value;
+        results.sort((a, b) => {
+            switch(sortBy) {
+                case 'date-desc':
+                    return new Date(b.date) - new Date(a.date);
+                case 'date-asc':
+                    return new Date(a.date) - new Date(b.date);
+                case 'name-asc':
+                    return a.name.localeCompare(b.name, 'ja');
+                case 'name-desc':
+                    return b.name.localeCompare(a.name, 'ja');
+                case 'score-desc':
+                    return b.percentage - a.percentage;
+                case 'score-asc':
+                    return a.percentage - b.percentage;
+                default:
+                    return new Date(b.date) - new Date(a.date);
+            }
+        });
+        
+        if (results.length === 0) {
+            this.resultsList.innerHTML = '<p>該当するテスト結果がありません。</p>';
+            return;
+        }
         
         this.resultsList.innerHTML = '';
         results.forEach(result => {
@@ -457,6 +526,133 @@ class TestSystem {
             alert('コピーに失敗しました。手動でコピーしてください。');
             console.error('コピーエラー:', err);
         });
+    }
+
+    showAdminLogin() {
+        this.showScreen('adminLoginScreen');
+        this.adminPassword.value = '';
+    }
+
+    handleAdminLogin() {
+        const password = this.adminPassword.value.trim();
+        if (password === this.ADMIN_PASSWORD) {
+            this.isAdmin = true;
+            this.loadAdminResults();
+            this.showScreen('adminScreen');
+        } else {
+            alert('パスワードが正しくありません。');
+        }
+    }
+
+    logoutAdmin() {
+        this.isAdmin = false;
+        this.showResultsList();
+    }
+
+    loadAdminResults() {
+        // 全受験者の結果を取得（localStorageから）
+        const allResults = this.resultManager.getAllResults();
+        
+        // フィルタリング
+        let results = allResults;
+        const filterName = this.adminFilterName.value.trim().toLowerCase();
+        if (filterName) {
+            results = results.filter(result => 
+                result.name.toLowerCase().includes(filterName)
+            );
+        }
+        
+        // ソート
+        const sortBy = this.adminSortBy.value;
+        results.sort((a, b) => {
+            switch(sortBy) {
+                case 'date-desc':
+                    return new Date(b.date) - new Date(a.date);
+                case 'date-asc':
+                    return new Date(a.date) - new Date(b.date);
+                case 'name-asc':
+                    return a.name.localeCompare(b.name, 'ja');
+                case 'name-desc':
+                    return b.name.localeCompare(a.name, 'ja');
+                case 'score-desc':
+                    return b.percentage - a.percentage;
+                case 'score-asc':
+                    return a.percentage - b.percentage;
+                default:
+                    return new Date(b.date) - new Date(a.date);
+            }
+        });
+        
+        if (results.length === 0) {
+            this.adminResultsList.innerHTML = '<p>該当するテスト結果がありません。</p>';
+            return;
+        }
+        
+        this.adminResultsList.innerHTML = '';
+        results.forEach(result => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-list-item';
+            
+            const date = new Date(result.date);
+            const dateString = date.toLocaleDateString('ja-JP');
+            const timeString = date.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+            const minutes = Math.floor(result.timeSpent / 60000);
+            const seconds = Math.floor((result.timeSpent % 60000) / 1000);
+            
+            resultItem.innerHTML = `
+                <div class="result-list-info">
+                    <div class="result-list-name">${result.name}</div>
+                    <div class="result-list-details">${dateString} ${timeString} | ${minutes}分${seconds}秒</div>
+                </div>
+                <div class="result-list-score">${result.percentage}%</div>
+                <div class="result-list-actions">
+                    <button class="btn btn-secondary btn-sm" onclick="testSystem.viewAdminResult(${result.id})">詳細</button>
+                </div>
+            `;
+            
+            this.adminResultsList.appendChild(resultItem);
+        });
+    }
+
+    viewAdminResult(resultId) {
+        const allResults = this.resultManager.getAllResults();
+        const result = allResults.find(r => r.id === resultId);
+        if (result) {
+            this.currentResult = result;
+            this.currentWrongAnswers = result.wrongAnswers || [];
+            this.displayResults(result, this.currentWrongAnswers);
+            this.showScreen('resultScreen');
+        }
+    }
+
+    exportAllResults() {
+        const allResults = this.resultManager.getAllResults();
+        if (allResults.length === 0) {
+            alert('エクスポートする結果がありません。');
+            return;
+        }
+
+        let csv = '名前,正解数,総問題数,正解率,所要時間(分),所要時間(秒),知識レベル,日時\n';
+        
+        allResults.forEach(result => {
+            const level = this.getKnowledgeLevel(result.percentage);
+            const minutes = Math.floor(result.timeSpent / 60000);
+            const seconds = Math.floor((result.timeSpent % 60000) / 1000);
+            const date = new Date(result.date);
+            const dateString = date.toLocaleString('ja-JP');
+            
+            csv += `"${result.name}",${result.score},${result.totalQuestions},${result.percentage},${minutes},${seconds},"${level.text}","${dateString}"\n`;
+        });
+
+        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `クロコス社内運用試験_全結果_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     showScreen(screenId) {

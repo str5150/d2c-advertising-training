@@ -73,6 +73,7 @@
                 <button id="prevBtn" class="btn btn-secondary" disabled>前の問題</button>
                 <button id="nextBtn" class="btn btn-primary">次の問題</button>
                 <button id="finishBtn" class="btn btn-success" style="display: none;">テストを完了する</button>
+                <button id="exitTestBtn" class="btn btn-secondary" style="margin-left: auto;">テストを終了する</button>
             </div>
 
             <div class="progress-bar">
@@ -130,11 +131,75 @@
         <div id="resultsListScreen" class="screen">
             <div class="results-list-container">
                 <h2>テスト結果一覧</h2>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="filterName">名前で検索:</label>
+                        <input type="text" id="filterName" placeholder="名前を入力">
+                    </div>
+                    <div class="filter-group">
+                        <label for="sortBy">並び替え:</label>
+                        <select id="sortBy">
+                            <option value="date-desc">日時（新しい順）</option>
+                            <option value="date-asc">日時（古い順）</option>
+                            <option value="name-asc">名前（あいうえお順）</option>
+                            <option value="name-desc">名前（逆順）</option>
+                            <option value="score-desc">正解率（高い順）</option>
+                            <option value="score-asc">正解率（低い順）</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="results-list" id="resultsList"></div>
                 <div class="results-actions">
                     <button id="backToTestBtn" class="btn btn-primary">テストに戻る</button>
+                    <button id="adminLoginBtn" class="btn btn-secondary">管理者ログイン</button>
                     <button id="clearResultsBtn" class="btn btn-danger">結果をクリア</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- 管理者ログイン画面 -->
+        <div id="adminLoginScreen" class="screen">
+            <div class="admin-login-container">
+                <h2>管理者ログイン</h2>
+                <form id="adminLoginForm">
+                    <div class="input-group">
+                        <label for="adminPassword">パスワード</label>
+                        <input type="password" id="adminPassword" name="adminPassword" required placeholder="パスワードを入力">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">ログイン</button>
+                        <button type="button" id="cancelAdminLoginBtn" class="btn btn-secondary">キャンセル</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 管理者画面 -->
+        <div id="adminScreen" class="screen">
+            <div class="admin-container">
+                <h2>管理者画面 - 全受験者結果</h2>
+                <div class="admin-filter-controls">
+                    <div class="filter-group">
+                        <label for="adminFilterName">名前で検索:</label>
+                        <input type="text" id="adminFilterName" placeholder="名前を入力">
+                    </div>
+                    <div class="filter-group">
+                        <label for="adminSortBy">並び替え:</label>
+                        <select id="adminSortBy">
+                            <option value="date-desc">日時（新しい順）</option>
+                            <option value="date-asc">日時（古い順）</option>
+                            <option value="name-asc">名前（あいうえお順）</option>
+                            <option value="name-desc">名前（逆順）</option>
+                            <option value="score-desc">正解率（高い順）</option>
+                            <option value="score-asc">正解率（低い順）</option>
+                        </select>
+                    </div>
+                    <div class="admin-actions">
+                        <button id="exportAllResultsBtn" class="btn btn-primary">全結果をエクスポート</button>
+                        <button id="logoutAdminBtn" class="btn btn-secondary">ログアウト</button>
+                    </div>
+                </div>
+                <div class="admin-results-list" id="adminResultsList"></div>
             </div>
         </div>
     </div>
