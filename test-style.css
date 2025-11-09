@@ -124,6 +124,12 @@ body {
     font-family: 'Noto Serif JP', serif;
 }
 
+.test-header-right {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
 .test-timer {
     background: #000;
     color: #fff;

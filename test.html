@@ -37,8 +37,11 @@
                     <span id="testTitle">クロコス社内運用試験</span>
                     <span id="testProgress">1 / 50</span>
                 </div>
-                <div class="test-timer">
-                    <span id="timer">00:00</span>
+                <div class="test-header-right">
+                    <button id="exitTestBtn" class="btn btn-secondary btn-sm">テストを終了する</button>
+                    <div class="test-timer">
+                        <span id="timer">00:00</span>
+                    </div>
                 </div>
             </div>
 
@@ -73,7 +76,6 @@
                 <button id="prevBtn" class="btn btn-secondary" disabled>前の問題</button>
                 <button id="nextBtn" class="btn btn-primary">次の問題</button>
                 <button id="finishBtn" class="btn btn-success" style="display: none;">テストを完了する</button>
-                <button id="exitTestBtn" class="btn btn-secondary" style="margin-left: auto;">テストを終了する</button>
             </div>
 
             <div class="progress-bar">
@@ -114,15 +116,15 @@
                     </div>
                 </div>
 
-                <div class="wrong-answers" id="wrongAnswersContainer" style="display: none;">
-                    <h3>間違えた問題</h3>
-                    <div class="wrong-answers-list" id="wrongAnswersList"></div>
-                </div>
-
                 <div class="result-actions">
                     <button id="copyResultBtn" class="btn btn-primary">結果をコピー</button>
                     <button id="retakeBtn" class="btn btn-secondary">再テスト</button>
                     <button id="viewResultsBtn" class="btn btn-secondary">結果一覧を見る</button>
+                </div>
+
+                <div class="wrong-answers" id="wrongAnswersContainer" style="display: none;">
+                    <h3>間違えた問題</h3>
+                    <div class="wrong-answers-list" id="wrongAnswersList"></div>
                 </div>
             </div>
         </div>
