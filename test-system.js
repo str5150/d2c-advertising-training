@@ -407,8 +407,48 @@ class TestSystem {
     }
 }
 
+// アクセス制限チェック
+function checkAccessRestriction() {
+    const allowedHosts = [
+        'str5150.github.io',
+        'localhost',
+        '127.0.0.1'
+    ];
+    
+    const currentHost = window.location.hostname;
+    const referrer = document.referrer;
+    
+    // 現在のホストが許可されたホストかチェック
+    const isAllowedHost = allowedHosts.some(host => currentHost === host || currentHost.endsWith('.' + host));
+    
+    // リファラーが許可されたホストからのものかチェック
+    const isAllowedReferrer = !referrer || allowedHosts.some(host => referrer.includes(host));
+    
+    // 直接アクセス（referrerが空）でGitHub Pagesのドメインからの場合は許可
+    if (!isAllowedHost && !isAllowedReferrer) {
+        // アクセス拒否メッセージを表示
+        document.body.innerHTML = `
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Noto Sans JP', sans-serif;">
+                <div style="text-align: center; padding: 2rem;">
+                    <h1 style="color: #e74c3c; margin-bottom: 1rem;">アクセスが制限されています</h1>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">このページは公開URLからのみアクセス可能です。</p>
+                    <p style="color: #7f8c8d;">正しいURLからアクセスしてください。</p>
+                </div>
+            </div>
+        `;
+        return false;
+    }
+    
+    return true;
+}
+
 // テストシステムの初期化
 let testSystem;
 document.addEventListener('DOMContentLoaded', () => {
+    // アクセス制限をチェック
+    if (!checkAccessRestriction()) {
+        return;
+    }
+    
     testSystem = new TestSystem();
 });
