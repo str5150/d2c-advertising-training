@@ -501,9 +501,6 @@ class TestSystem {
             
             wrongAnswers.forEach((wrongAnswer, index) => {
                 text += `${index + 1}. Q${wrongAnswer.questionNumber}: ${wrongAnswer.question}\n`;
-                text += `   あなたの回答: ${wrongAnswer.userAnswer}\n`;
-                text += `   正解: ${wrongAnswer.correctAnswer}\n`;
-                text += `   解説: ${wrongAnswer.explanation}\n\n`;
             });
         } else {
             text += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
